@@ -8,30 +8,11 @@ import Country from './component/Country'
 import './index.css'
 
 
-const course = {
-  name: 'Half Stack application development',
-  parts: [
-    {
-      name: 'Fundamentals of React',
-      exercises: 10
-    },
-    {
-      name: 'Using props to pass data',
-      exercises: 7
-    },
-    {
-      name: 'State of a component',
-      exercises: 14
-    }
-  ]
-}
-
 const App = () => {
   const timeOutC1 = 1000, timeOutC2 = 500;
-
   return (
     <>
-      <BaseContent course={course} />
+      <BaseContent />
       <Counter timeOut={timeOutC1}/>
       <Counter timeOut={timeOutC2}/>
       <ClickButton />
@@ -41,7 +22,4 @@ const App = () => {
   )
 }
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-)
+ReactDOM.render( <App />, document.getElementById('root') )

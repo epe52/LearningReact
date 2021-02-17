@@ -1,32 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const Header = (props) =>  {
-  console.log('ffffrfr', props);
-  return(
+const Header = (props) =>  (
     <h1>{props.course.name}</h1>
-  )
-}
+)
   
 const Content = (props) => {
-  console.log(props.course.name)
   const parts = props.course.parts
-  console.log('Parts', props);
   return (
-    <>
-      {parts?.map(part => (<p key={part.name}>{part.name} {part.exercises}</p>))}
-    </>
+    <> {parts?.map(part => (<p key={part.name}>{part.name} {part.exercises}</p>))} </>
   )
 }
   
 const Total = (props) => {
   // Destructuring
-  const {name, parts} = props.course
-
-  console.log('ff', props.course);
-
-  if (!!props.course)
-    return null
+  const parts = props.course.parts
 
   // Help function that doesn't need parameters for props. Written in compact form with no "{}"
   const testHelpFunction = () =>
@@ -35,19 +23,18 @@ const Total = (props) => {
   // Total with reduce in an object array
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce#sum_of_values_in_an_object_array
   const total = parts?.reduce(
-    (accumulator, currentValue) => accumulator + currentValue.exercises,
-    0
+    (accumulator, currentValue) => accumulator + currentValue.exercises, 0
   )
 
   return (
     <>
-      <p>Number of exercises {total} on the course "{name}"</p>
+      <p>Total number of exercises on the courses is {total}</p>
       <p>{testHelpFunction()}</p>
     </>
   )
 }
 
-const BaseContent = ({course}) => {
+const BaseContent = () => {
 
   const [courseD, setCourseD] = useState([])
 
@@ -56,19 +43,19 @@ const BaseContent = ({course}) => {
     axios
       .get('http://localhost:3001/course')
       .then(response => {
-        console.log('promise fulfilled')
-        setCourseD(response.data[1].parts)
+        console.log('promise fulfilled', response.data)
+        setCourseD(response.data)
       })
   }, [])
-  console.log('render GEGE', courseD)
-  // How to return only after useEffect is done?
+  //console.log('render GEGE', courseD)
 
+  // Return only after useEffect is done with use of !!courseD[0]
   return(
-    <>{courseD &&
+    <>{!!courseD[0] &&
       <div>
-        <Header course={courseD} />
-        <Content course={courseD} />
-        <Total course={courseD} />
+        <Header course={courseD[0]} />
+        <Content course={courseD[1]} />
+        <Total course={courseD[1]} />
       </div>
     }</>
   )
